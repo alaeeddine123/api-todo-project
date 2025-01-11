@@ -1,0 +1,28 @@
+<mat-toolbar class="tool-bar">
+  <img src="../../../assets/images/task-planning-app-fotor.png" alt="Logo">
+
+  <button mat-button class="element-tool-bar">Create new task</button>
+  <button mat-button class="element-tool-bar">my current tasks</button>
+<button mat-button class="element-tool-bar">element 3</button>
+<button mat-button class="element-tool-bar">element 4 </button>
+
+
+      <div  class="right-header">
+            <div class="element-tool-bar">
+              <input matInput placeholder="Search">
+              <button mat-icon-button aria-label="Search">
+                <mat-icon>search</mat-icon>
+              </button>
+            </div>
+
+            <div class="menu-three-buttons-right">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>Language</button>
+                <button mat-menu-item>Logout</button>
+              </mat-menu>
+            </div>
+    </div>
+</mat-toolbar>

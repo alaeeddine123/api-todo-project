@@ -1,0 +1,274 @@
+/*.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+.user-email {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.user-role {
+  font-size: 11px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.sidenav-container {
+  flex: 1;
+  height: calc(100vh - 64px);
+}
+
+.sidenav {
+  width: 250px;
+  background-color: white;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.sidenav-content {
+  padding: 16px;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-items a {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.menu-items a:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.menu-items a.active-link {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.menu-items a.active-link .menu-icon {
+  color: #1976d2;
+}
+
+.menu-icon {
+  margin-right: 16px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.menu-text {
+  font-size: 14px;
+}
+
+.dashboard-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 64px);
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-label {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.card-value {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 16px;
+}
+
+.chart-card mat-card-content,
+.tasks-card mat-card-content {
+  min-height: 300px;
+}
+
+.task-item {
+  width: 100%;
+}
+
+.task-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.task-title {
+  font-weight: 500;
+}*/
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+
+      .user-name {
+        font-weight: 500;
+      }
+
+      .user-email, .user-role {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.sidenav-container {
+  flex: 1;
+  margin-top: 64px; // Height of toolbar
+
+  .sidenav {
+    width: 250px;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+    .sidenav-content {
+      padding: 16px;
+    }
+
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      a {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.87);
+        border-radius: 8px;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        &.active-link {
+          background-color: rgba(0, 0, 0, 0.08);
+          color: var(--primary-color);
+
+          .mat-icon {
+            color: var(--primary-color);
+          }
+        }
+
+        .menu-icon {
+          margin-right: 16px;
+          color: rgba(0, 0, 0, 0.54);
+        }
+
+        .menu-text {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 599px) {
+  .app-toolbar {
+    .profile-section {
+      .user-info {
+        display: none; // Hide email and role on mobile
+      }
+    }
+  }
+
+  .sidenav-container {
+    margin-top: 56px; // Toolbar is shorter on mobile
+  }
+}

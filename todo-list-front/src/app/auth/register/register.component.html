@@ -1,0 +1,34 @@
+
+@if(!requestSent){
+<div   class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+ <mat-card class="box-login">
+        <mat-card-header >
+          <div class="box-login">
+          <mat-card-title >Register</mat-card-title>
+        </div>
+        </mat-card-header>
+
+      <form class="registration-form-fields">
+        <mat-card-content>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="First Name" [(ngModel)]="registrationReq.firstname" name="firstName">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Last Name" [(ngModel)]="registrationReq.lastname" name="lastName">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Email" [(ngModel)]="registrationReq.email" name="email">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput type="password" placeholder="Password" [(ngModel)]="registrationReq.password" name="password">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="register()">Register</button>
+      </mat-card-content>
+      </form>
+</mat-card>
+</div>
+}@else{
+  <div> Registration request is sent </div>
+}
+
+
