@@ -1,0 +1,38 @@
+.tool-bar {
+  display: flex;
+  background-color: #e5dfdf;
+  color: #ffffff;
+  height: 64px;
+  justify-content: space-between;
+
+  .right-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .element-tool-bar {
+    margin-left: 16px;
+    display: flex;
+    flex-direction: row;
+  }
+
+ /* component.scss */
+
+  .mat-icon-button {
+    color: #ffffff;
+  }
+
+  .mat-menu-trigger {
+    margin-left: 16px;
+  }
+
+  .menu-three-buttons-right {
+    align-items: flex-end;
+    margin-left: 20px;
+  }
+}
+
+
+::ng-deep .my-search-bar input.matInput {
+  width: 700px; /* Adjust the width as per your preference */
+}

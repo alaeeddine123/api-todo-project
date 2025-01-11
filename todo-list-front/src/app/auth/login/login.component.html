@@ -1,0 +1,38 @@
+
+<div class="login-container">
+  <div class="login-left">
+
+  </div>
+  <div class="login-right">
+    <div role="alert" *ngIf="errorMessage.length">
+      <p *ngFor="let msg of errorMessage">{{msg}}</p>
+    </div>
+    <div *ngIf="!registerFlag" class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+      <mat-card class="box-login">
+        <mat-card-header>
+          <mat-card-title>Log in</mat-card-title>
+        </mat-card-header>
+
+        <form class="example-form" [formGroup]="loginForm" (ngSubmit) ="login()" >
+          <mat-card-content>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Username"  formControlName="email" name="username" required >
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput type="password"  formControlName="password"  name="password" placeholder="Password" required>
+            </mat-form-field >
+            <button mat-stroked-button color="accent" class="login-button" type="submit">Log in</button>
+            <div class="register-quetion" >don't have an account ?
+              <button mat-stroked-button color="accent"  class="register-button"  type="submit" (click)="register()">register</button>
+            </div>
+          </mat-card-content>
+        </form>
+      </mat-card>
+    </div>
+    <div *ngIf="registerFlag" class="login-wrapper" fxLayout="row" fxLayoutAlign="center center" >
+         <app-register>
+
+         </app-register>
+    </div>
+  </div>
+</div>
