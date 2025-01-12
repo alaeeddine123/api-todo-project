@@ -1,0 +1,112 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+
+      .user-name {
+        font-weight: 500;
+      }
+
+      .user-email, .user-role {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.sidenav-container {
+  flex: 1;
+  margin-top: 64px; // Height of toolbar
+
+  .sidenav {
+    width: 250px;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+    .sidenav-content {
+      padding: 16px;
+    }
+
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      a {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.87);
+        border-radius: 8px;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        &.active-link {
+          background-color: rgba(0, 0, 0, 0.08);
+          color: var(--primary-color);
+
+          .mat-icon {
+            color: var(--primary-color);
+          }
+        }
+
+        .menu-icon {
+          margin-right: 16px;
+          color: rgba(0, 0, 0, 0.54);
+        }
+
+        .menu-text {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 599px) {
+  .app-toolbar {
+    .profile-section {
+      .user-info {
+        display: none; // Hide email and role on mobile
+      }
+    }
+  }
+
+  .sidenav-container {
+    margin-top: 56px; // Toolbar is shorter on mobile
+  }
+}

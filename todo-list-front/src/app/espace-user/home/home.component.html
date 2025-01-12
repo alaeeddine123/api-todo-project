@@ -1,0 +1,43 @@
+<div class="app-container">
+  <!-- Toolbar/Header -->
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="isSidenavOpen = !isSidenavOpen">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>TodoApp</span>
+    <span class="toolbar-spacer"></span>
+    <div class="profile-section">
+      <img [src]="user.avatar" [alt]="user.name" class="avatar">
+      <div class="user-info">
+        <span class="user-name">{{user.name}}</span>
+        <span class="user-email">{{user.email}}</span>
+        <span class="user-role">{{user.role}}</span>
+      </div>
+      <button mat-icon-button (click)="onLogout()" matTooltip="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- Sidenav Container -->
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidenav -->
+    <mat-sidenav mode="side" [opened]="isSidenavOpen" class="sidenav">
+      <div class="sidenav-content">
+        <div class="menu-items">
+          <a mat-list-item *ngFor="let item of menuItems"
+             [routerLink]="item.route"
+             routerLinkActive="active-link">
+            <mat-icon class="menu-icon">{{item.icon}}</mat-icon>
+            <span class="menu-text">{{item.text}}</span>
+          </a>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <!-- Main Content Area -->
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
