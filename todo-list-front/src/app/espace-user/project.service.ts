@@ -25,5 +25,10 @@ export class ProjectService {
     }))
   }
 
+  getAllProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${baseUrl}/list`, {
+      withCredentials: true
+    });
+  }
 
 }
