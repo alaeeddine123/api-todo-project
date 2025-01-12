@@ -9,10 +9,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @SecuredRestController
 @RequestMapping("/project")
@@ -28,6 +27,11 @@ public class ProjectController {
         public ResponseEntity<String> createProject(@RequestBody @Valid Project project){
         projectService.createProject(project);
         return ResponseEntity.ok("Project created succesfully");
+    }
+
+    @GetMapping("/get-projects-list")
+        public ResponseEntity<List<Project>> getProjectsList(){
+        return ResponseEntity.ok(projectService.getAllProjects());
     }
 
 }

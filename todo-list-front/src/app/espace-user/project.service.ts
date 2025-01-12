@@ -1,7 +1,7 @@
 import { Project } from './models/project-interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 
 
@@ -26,9 +26,15 @@ export class ProjectService {
   }
 
   getAllProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${baseUrl}/list`, {
-      withCredentials: true
-    });
+    return this.http.get<Project[]>(`${baseUrl}/get-projects-list`, {
+      withCredentials: true,
+    }).pipe(
+      map((projects) => projects || []), // Ensure an empty array if the response is null or undefined
+      catchError((error) => {
+        console.error('Error fetching projects:', error);
+        return of([]); // Return an empty array in case of an error
+      })
+    );
   }
 
 }
