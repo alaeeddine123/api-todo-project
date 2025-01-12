@@ -9,8 +9,13 @@ import { ProjectService } from '../project.service';
   styleUrl: './my-projects.component.scss'
 })
 export class MyProjectsComponent  implements OnInit{
-  projects: Project[] = [
-    {
+
+
+
+  projects: Project[] = [];
+  loading = true;
+  error: string | null = null;
+  /*  {
       id: 1,
       title: 'Project A',
       description: 'Description of Project A',
@@ -34,10 +39,25 @@ export class MyProjectsComponent  implements OnInit{
       priority: 'Low',
       teamSize: 'Large (8+)'
     }
-  ];
+  ];*/
 
-  constructor() {}
+  constructor(private projectService:ProjectService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getProjectsList();
+  }
+
+  getProjectsList(){
+    this.projectService.getAllProjects().subscribe({
+      next:(data) => {
+        this.projects = data;
+        this.loading = false;
+      },
+      error :(error) => {
+        console.error(" error fetching project list ",error);
+        this.loading = false;
+      }
+    })
+  }
 }
 
