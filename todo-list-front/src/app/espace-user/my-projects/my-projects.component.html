@@ -1,0 +1,23 @@
+<div class="project-list">
+  <h2>Project List</h2>
+  <table class="project-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Priority</th>
+        <th>Team Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects">
+        <td>{{ project.title }}</td>
+        <td>{{ project.description }}</td>
+        <td>{{ project.dueDate | date: 'shortDate' }}</td>
+        <td>{{ project.priority }}</td>
+        <td>{{ project.teamSize }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

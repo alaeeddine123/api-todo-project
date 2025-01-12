@@ -1,6 +1,7 @@
 import { FormControl } from "@angular/forms";
 
 export interface Project {
+  id? : number ;
   title: string;
   description: string;
   dueDate: Date;

@@ -6,6 +6,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { DashBoardComponent } from './dash-board/dash-board.component';
+import { MyProjectsComponent } from './my-projects/my-projects.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,7 @@ const routes: Routes = [
       },
       {
         path: 'projects',
-        component: DashBoardComponent  // Replace with ProjectsComponent when created
+        component: MyProjectsComponent  // Replace with ProjectsComponent when created
       },
       {
         path: 'settings',
