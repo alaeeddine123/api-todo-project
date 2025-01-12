@@ -1,0 +1,19 @@
+# Root level
+.DS_Store
+.idea/
+.vscode/
+
+# Angular/Frontend ignores
+todo-list-front/node_modules/
+todo-list-front/.angular/cache/
+todo-list-front/dist/
+todo-list-front/.env
+todo-list-front/.angular
+
+# Spring/Backend ignores
+todolist-api-backend/target/
+todolist-api-backend/.mvn/
+todolist-api-backend/HELP.md
+todolist-api-backend/.env
+*.class
+*.jar
