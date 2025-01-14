@@ -67,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public PageResponse<TaskResponse> findAllByTaksByAssignee(int page, int size, Authentication connectedUser) {
+    public PageResponse<TaskResponse>   findAllByTaksByAssignee(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAT").descending());
         Page<Task> tasks = taskRepository.findAll(withAssigneeId(user.getId()), pageable);

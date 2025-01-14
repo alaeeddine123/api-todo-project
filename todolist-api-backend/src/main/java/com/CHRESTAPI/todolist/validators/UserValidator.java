@@ -8,9 +8,6 @@ import java.util.Set;
 
 public class  UserValidator {
     private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-
-    //sum fucntion
-
     private static final Validator validator = factory.getValidator();
 
     public static void validate(Object object) {

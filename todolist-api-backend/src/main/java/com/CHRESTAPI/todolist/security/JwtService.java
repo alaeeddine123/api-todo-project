@@ -77,64 +77,39 @@ public class JwtService {
 
    public boolean isTokenValid(String token, UserDetails userDetails) {
     try {
-        System.out.println("Token Validation Details:");
-        System.out.println("Input Token: " + token);
-        System.out.println("Username from token: " + extractUsername(token));
-        System.out.println("UserDetails username: " + userDetails.getUsername());
-
         final String username = extractUsername(token);
         boolean isUsernameMatch = username.equals(userDetails.getUsername());
         boolean isTokenExpired = isTokenExpired(token);
-
-        System.out.println("Username Match: " + isUsernameMatch);
-        System.out.println("Token Expired: " + isTokenExpired);
-
         return (isUsernameMatch) && !isTokenExpired;
     } catch (Exception e) {
-        System.out.println("Token Validation Exception:");
         e.printStackTrace();
         return false;
     }
 }
-
-    /*private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }*/
     private boolean isTokenExpired(String token) {
     try {
         Date expiration = extractExpiration(token);
         boolean isExpired = expiration.before(new Date());
-        System.out.println("Token Expiration: " + expiration);
-        System.out.println("Current Date: " + new Date());
-        System.out.println("Is Expired: " + isExpired);
         return isExpired;
     } catch (Exception e) {
-        System.out.println("Expiration Check Exception:");
         e.printStackTrace();
         return true;
     }
 }
-
     private Date extractExpiration(String token) {
         return extractClaim(token , Claims::getExpiration);
     }
 
-
 private Key getSignInkey() {
-    System.out.println("Secret Key before decoding: " + secretKey);
     if (secretKey == null || secretKey.isEmpty()) {
-        System.out.println("Generating new key due to empty secret key");
         return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
     try {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        System.out.println("Key bytes length: " + keyBytes.length);
         return Keys.hmacShaKeyFor(keyBytes);
     } catch (WeakKeyException e) {
-        System.out.println("Weak key exception. Generating new key.");
         return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     } catch (Exception e) {
-        System.out.println("Unexpected error generating key: " + e.getMessage());
         return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 }
