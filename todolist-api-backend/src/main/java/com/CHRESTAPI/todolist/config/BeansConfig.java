@@ -47,41 +47,41 @@ public class BeansConfig {
         return configuration.getAuthenticationManager();
     }
 
-   @Bean
-public CorsFilter corsFilter() {
-    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    final CorsConfiguration config = new CorsConfiguration();
+    @Bean
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
 
-    config.setAllowCredentials(true);
-    config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
 
-    // Add more detailed headers
-    config.setAllowedHeaders(Arrays.asList(
-        HttpHeaders.ORIGIN,
-        HttpHeaders.CONTENT_TYPE,
-        HttpHeaders.ACCEPT,
-        HttpHeaders.AUTHORIZATION,
-        "Set-Cookie"  // Explicitly allow Set-Cookie header
-    ));
+        // Add more detailed headers
+        config.setAllowedHeaders(Arrays.asList(
+                HttpHeaders.ORIGIN,
+                HttpHeaders.CONTENT_TYPE,
+                HttpHeaders.ACCEPT,
+                HttpHeaders.AUTHORIZATION,
+                "Set-Cookie"  // Explicitly allow Set-Cookie header
+        ));
 
-    config.setExposedHeaders(Arrays.asList(
-        "Set-Cookie",
-        HttpHeaders.AUTHORIZATION
-    ));
+        config.setExposedHeaders(Arrays.asList(
+                "Set-Cookie",
+                HttpHeaders.AUTHORIZATION
+        ));
 
-    config.setAllowedMethods(Arrays.asList(
-        "GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"
-    ));
+        config.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"
+        ));
 
-    source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config);
 
-    // Add logging
-    System.out.println("CORS Configuration:");
-    System.out.println("Allowed Origins: " + config.getAllowedOrigins());
-    System.out.println("Allowed Headers: " + config.getAllowedHeaders());
-    System.out.println("Exposed Headers: " + config.getExposedHeaders());
-    System.out.println("Allowed Methods: " + config.getAllowedMethods());
+        // Add logging
+        System.out.println("CORS Configuration:");
+        System.out.println("Allowed Origins: " + config.getAllowedOrigins());
+        System.out.println("Allowed Headers: " + config.getAllowedHeaders());
+        System.out.println("Exposed Headers: " + config.getExposedHeaders());
+        System.out.println("Allowed Methods: " + config.getAllowedMethods());
 
-    return new CorsFilter(source);
-}
+        return new CorsFilter(source);
+    }
 }
