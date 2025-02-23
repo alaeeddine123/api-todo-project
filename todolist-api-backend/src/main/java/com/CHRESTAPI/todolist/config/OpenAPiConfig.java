@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -42,51 +43,47 @@ import org.springframework.context.annotation.Configuration;
         )
     },
     security = {
-        @SecurityRequirement(
-            name = "bearerAuth"
-        )
+        @SecurityRequirement(name = "bearerAuth")
     }
 )
 @SecurityScheme(
     name = "bearerAuth",
-    description = "JWT Authentication",
+    description = "JWT auth description",
     scheme = "bearer",
     type = SecuritySchemeType.HTTP,
-    bearerFormat = "JWT",
-    in = SecuritySchemeIn.HEADER
+    bearerFormat = "JWT"
 )
 public class OpenAPiConfig {
-
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-            .components(new Components()
-                .addSchemas("AuthenticationRequest", createAuthRequestSchema())
-                .addSchemas("AuthenticationResponse", createAuthResponseSchema())
-            );
+                .components(new Components()
+                        .addSchemas("AuthenticationRequest", createAuthRequestSchema())
+                        .addSchemas("AuthenticationResponse", createAuthResponseSchema())
+                );
     }
 
     private Schema createAuthRequestSchema() {
         Schema schema = new Schema<Object>()
-            .type("object")
-            .addProperties("email", new Schema<String>()
-                .type("string")
-                .example("user@example.com")
-                .description("User's email address"))
-            .addProperties("password", new Schema<String>()
-                .type("string")
-                .example("password123")
-                .description("User's password"));
+                .type("object")
+                .addProperties("email", new Schema<String>()
+                        .type("string")
+                        .example("user@example.com")
+                        .description("User's email address"))
+                .addProperties("password", new Schema<String>()
+                        .type("string")
+                        .example("password123")
+                        .description("User's password"));
         schema.setRequired(java.util.Arrays.asList("email", "password"));
         return schema;
     }
 
     private Schema createAuthResponseSchema() {
         return new Schema<Object>()
-            .type("object")
-            .addProperties("token", new Schema<String>()
-                .type("string")
-                .example("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-                .description("JWT token"));
+                .type("object")
+                .addProperties("token", new Schema<String>()
+                        .type("string")
+                        .example("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+                        .description("JWT token"));
     }
 }

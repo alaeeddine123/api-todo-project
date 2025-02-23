@@ -23,7 +23,7 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .due_date(task.getDue_date())
                 .status(task.getStatus())
-                .assignee(task.getAssignee() != null ? task.getAssignee().getUsername() : null)
+                .assignee(task.getAssignee() != null ? task.getAssignee().getFullname() : null)
                 .build();
     }
 }

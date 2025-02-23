@@ -1,6 +1,5 @@
 package com.CHRESTAPI.todolist.entities;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,17 +16,15 @@ import java.time.LocalDateTime;
 public class Token {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Specify ID generation strategy
     private Integer id;
 
     private String token;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
-    private LocalDateTime ValidatedAt;
+    private LocalDateTime validatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)  // Use snake_case for column names
     private User user;
-
-
 }
