@@ -1,14 +1,11 @@
 package com.CHRESTAPI.todolist.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,19 +19,17 @@ import java.util.List;
 public class Role {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Specify ID generation strategy
     private Integer id;
 
     @Column(unique = true)
     private String name;
 
-
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
-    private List<User> user;
+    private List<User> users;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
-
 }
