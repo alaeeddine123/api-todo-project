@@ -1,11 +1,9 @@
 package com.CHRESTAPI.todolist.auth;
 
-import com.CHRESTAPI.todolist.email.EmailService;
 import com.CHRESTAPI.todolist.entities.User;
 import com.CHRESTAPI.todolist.repositories.UserRepository;
 import com.CHRESTAPI.todolist.security.keycloak.KeycloakService;
 import com.CHRESTAPI.todolist.security.token.TokenResponse;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,10 +15,9 @@ import java.time.LocalDate;
 @Slf4j
 public class AuthenticationService {
     private final UserRepository userRepository;
-    private final EmailService emailService;
     private final KeycloakService keycloakService;
 
-    public void register(RegisterRequest request) throws MessagingException {
+    public void register(RegisterRequest request)  {
         // Register in Keycloak first
         keycloakService.registerUser(request);
 

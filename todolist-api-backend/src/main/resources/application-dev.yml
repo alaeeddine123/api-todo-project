@@ -15,8 +15,7 @@ application:
   keycloak:
     resource: todolist-app-dev
     credentials:
-      secret: RuCkwc6xqYt2UxYeKYKVVb5dp6HwmFXK
-
+      secret: BTo1ygboTy0ZpwTswnlsPENGlk78tWay
   mailing:
     frontend:
       activation-url: http://localhost:4200/activate-account
