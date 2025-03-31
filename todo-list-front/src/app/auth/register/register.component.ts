@@ -33,17 +33,6 @@ export class RegisterComponent {
 
     console.log("this user value ", this.registrationReq);
 
-    this.authenticationService.register(this.registrationReq)
-      .subscribe(response => {
-        this.requestSent = true;
-
-        console.log("Registration response:", );
-        setTimeout(() => {
-          this.redirectToLogin()
-          this.requestSent = false;
-        }, 6000);
-      });
-
     }
 
     redirectToLogin() {

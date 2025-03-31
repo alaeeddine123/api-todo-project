@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -25,6 +25,18 @@ import { EspaceUserModule } from './espace-user/espace-user.module';
 import { SharedModule } from "./shared/shared.module";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { KeycloakService } from './services/keycloak/keycloak.service';
+
+
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () => {
+    console.log("Initializing Keycloak from APP_INITIALIZER");
+    return keycloak.init().then(authenticated => {
+      console.log("Keycloak initialization complete, authenticated:", authenticated);
+      return authenticated;
+    });
+  };
+}
 
 @NgModule({
   declarations: [
@@ -57,6 +69,12 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     HttpClient,
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    },
     { provide: HTTP_INTERCEPTORS,  useClass: AuthInterceptor,multi: true },
 
   ],

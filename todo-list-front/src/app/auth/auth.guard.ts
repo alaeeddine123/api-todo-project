@@ -1,32 +1,24 @@
-// auth.guard.ts
+import { KeycloakService } from './../services/keycloak/keycloak.service';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthenticationService } from './auth.service'; // Import your authentication service
-import { Observable, map } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
+import { AuthenticationService } from './auth.service';
+import { Observable, map, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthenticationService, private router: Router) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
- /*  canActivate(): boolean {
-    if (!this.authService['isAuthenticated']()) {
-      this.router.navigate(['/login']);
-      return false;
-    }
-    return true;
-  }*/
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(): Observable<boolean> {
     return this.authService.isAuthenticated().pipe(
-      map(isAuth => {
-        if (!isAuth) {
-          this.router.navigate(['/login'], {
-            queryParams: { returnUrl: state.url }
-          });
-          return false;
+      tap(isAuthenticated => {
+        if (!isAuthenticated) {
+          this.router.navigate(['/auth/login']);
         }
-        return true;
       })
     );
   }
