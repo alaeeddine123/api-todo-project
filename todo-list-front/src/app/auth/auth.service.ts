@@ -4,7 +4,6 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError, throwError, tap, take, finalize } from 'rxjs';
 import { AuthenticationRequest, AuthenticationReponse, RegisterRequest } from '../services/models';
 import { Router } from '@angular/router';
-import { KeycloakService } from '../services/keycloak/keycloak.service';
 
 const baseUrl = 'http://localhost:8088/api/v1/auth';
 

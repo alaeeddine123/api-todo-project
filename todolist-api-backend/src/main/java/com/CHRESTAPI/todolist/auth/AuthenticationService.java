@@ -6,9 +6,11 @@ import com.CHRESTAPI.todolist.security.keycloak.KeycloakService;
 import com.CHRESTAPI.todolist.security.token.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,39 @@ public class AuthenticationService {
         userRepository.save(user);
     }
 
-    public TokenResponse authenticate(AuthenticationRequest request) {
+     public TokenResponse authenticate(AuthenticationRequest request) {
         return keycloakService.authenticate(request);
+    }
+
+      /**
+     * Sync user info from JWT token to local database if needed
+     */
+    public User syncUserFromToken(Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        if (email == null) {
+            log.warn("No email found in JWT token");
+            return null;
+        }
+
+        Optional<User> existingUser = userRepository.findByEmail(email);
+
+        if (existingUser.isPresent()) {
+            return existingUser.get();
+        } else {
+            // User not in our database, create from token info
+            String firstName = jwt.getClaimAsString("given_name");
+            String lastName = jwt.getClaimAsString("family_name");
+
+            User newUser = User.builder()
+                    .firstname(firstName != null ? firstName : "")
+                    .lastname(lastName != null ? lastName : "")
+                    .email(email)
+                    .accountLocked(false)
+                    .enabled(true)
+                    .dateOfBirth(LocalDate.now())
+                    .build();
+
+            return userRepository.save(newUser);
+        }
     }
 }

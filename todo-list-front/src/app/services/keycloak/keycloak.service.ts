@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,128 +8,88 @@ import Keycloak from 'keycloak-js';
 export class KeycloakService {
   private _keycloak: Keycloak;
   private _initialized = false;
+  private _initPromise: Promise<boolean> | null = null;
+  private _authenticationState = new BehaviorSubject<boolean>(false);
+  isAuthenticated$: Observable<boolean> = this._authenticationState.asObservable();
 
   constructor() {
     this._keycloak = new Keycloak({
       url: 'http://localhost:8180',
       realm: 'todolist-app',
-      clientId: 'todolist-app-dev'
+      clientId: 'todolist-app-front-dev'
     });
+  }
+
+  get instance(): Keycloak {
+    return this._keycloak;
+  }
+
+  get authServerUrl(): string | undefined {
+    return this._keycloak.authServerUrl;
   }
 
   init(): Promise<boolean> {
-    if (this._initialized) {
-      return Promise.resolve(this._keycloak.authenticated || false);
+    if (this._initPromise) {
+      return this._initPromise;
     }
 
-    console.log("Initializing Keycloak...");
+    this._initPromise = new Promise<boolean>((resolve) => {
+      const hasAuthParams = window.location.hash.includes('code=') || window.location.hash.includes('state=');
 
-    return new Promise<boolean>((resolve) => {
-      try {
-        // Create the init options with proper type assertions
-        const initOptions = {
-          onLoad: 'check-sso' as const,
-          silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
-          checkLoginIframe: false, // Disable iframe checks completely for now
-          pkceMethod: 'S256' as const
-        };
+      this._keycloak.init({
+        onLoad: 'check-sso' as const,
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        checkLoginIframe: false
+      })
+      .then(authenticated => {
+        console.log("Keycloak initialized successfully, authenticated:", authenticated);
+        this._initialized = true;
+        this._initPromise = null;
+        this._authenticationState.next(authenticated);
 
-        console.log("Init options:", initOptions);
-
-        this._keycloak.init(initOptions)
-          .then(authenticated => {
-            console.log("Keycloak initialized successfully, authenticated:", authenticated);
-
-            // Add extra debugging info
-            if (this._keycloak.token) {
-              const tokenParts = this._keycloak.token.split('.');
-              if (tokenParts.length === 3) {
-                const payload = JSON.parse(atob(tokenParts[1]));
-                console.log("Token expiration:", new Date(payload.exp * 1000));
-              }
-            }
-
-            this._initialized = true;
-
-            if (authenticated) {
-              console.log("User has an active Keycloak session");
-              this.setupTokenRefresh();
-            } else {
-              console.log("No active Keycloak session detected");
-            }
-
-            resolve(authenticated);
-          })
-          .catch(error => {
-            console.error("Keycloak initialization failed:", error);
-            resolve(false);
-          });
-      } catch (error) {
-        console.error("Exception during Keycloak initialization:", error);
+        if (authenticated) {
+          console.log("User has an active Keycloak session");
+          this.setupTokenRefresh();
+          if (hasAuthParams) {
+            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            console.log("URL hash cleaned after successful authentication");
+          }
+        }
+        resolve(authenticated);
+      })
+      .catch(error => {
+        console.error("Keycloak initialization failed:", error);
+        this._initialized = false;
+        this._initPromise = null;
+        this._authenticationState.next(false);
         resolve(false);
-      }
+      });
     });
-  }
-  private setupTokenRefresh(): void {
-    // Set minimum validity in seconds (refresh when less than 70 seconds remain)
-    const minValidity = 70;
 
+    return this._initPromise;
+  }
+
+  private setupTokenRefresh(): void {
+    const minValidity = 70;
     this._keycloak.onTokenExpired = () => {
       console.log("Token expired, refreshing...");
-      this._keycloak.updateToken(minValidity)
-        .then(refreshed => {
-          if (refreshed) {
-            console.log("Token was successfully refreshed");
-          } else {
-            console.log("Token is still valid, not refreshed");
-          }
-        })
-        .catch(error => {
-          console.error("Failed to refresh token:", error);
-          this.logout();
-        });
+      this._keycloak.updateToken(minValidity).catch(() => {
+        console.error("Failed to refresh token, logging out");
+        this.logout();
+      });
     };
-
-    // Initial update check
-    this._keycloak.updateToken(minValidity).catch(() => {
-      console.log("Token update failed on init");
-    });
   }
 
   login(): void {
-    if (!this._initialized) {
-      console.error("Cannot login: Keycloak not initialized");
-      return;
-    }
-
-    try {
-      const redirectUri = window.location.origin + '/espace-user';
-      console.log("Redirecting to:", redirectUri);
-
-      this._keycloak.login({
-        redirectUri: redirectUri
-      });
-    } catch (error) {
-      console.error("Error during login:", error);
-    }
+    this._keycloak.login({
+      redirectUri: window.location.origin + '/espace-user/dashboard'
+    });
   }
 
   logout(): void {
-    if (!this._initialized) {
-      console.error("Cannot logout: Keycloak not initialized");
-      return;
-    }
-
-    try {
-      const redirectUri = window.location.origin + '/auth/login';
-      console.log("Logout redirecting to:", redirectUri);
-
-      this._keycloak.logout({
-        redirectUri: redirectUri
-      });
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+    this._keycloak.logout({
+      redirectUri: window.location.origin + '/auth/login'
+    });
   }
 
   getToken(): string | undefined {
@@ -139,15 +100,17 @@ export class KeycloakService {
     return this._initialized && !!this._keycloak.authenticated;
   }
 
+  getUserRoles(): string[] {
+    return this._keycloak.realmAccess?.roles || [];
+  }
+
   getUserProfile(): Promise<any> {
     if (!this._initialized) {
       return Promise.reject('Keycloak not initialized');
     }
-
     if (!this._keycloak.authenticated) {
       return Promise.reject('User not authenticated');
     }
-
     return this._keycloak.loadUserProfile();
   }
 }

@@ -4,21 +4,29 @@ spring:
     username: username
     password: password
     driver-class-name: org.postgresql.Driver
-
   mail:
     host: localhost
     port: 1025
     username: dev
     password: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: todolist-app-dev
+            client-secret: BTo1ygboTy0ZpwTswnlsPENGlk78tWay
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email,roles
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/realms/todolist-app
+            user-name-attribute: preferred_username
 
-application:
-  keycloak:
-    resource: todolist-app-dev
-    credentials:
-      secret: BTo1ygboTy0ZpwTswnlsPENGlk78tWay
-  mailing:
-    frontend:
-      activation-url: http://localhost:4200/activate-account
+keycloak:
+  realm: todolist-app
+  auth-server-url: http://localhost:8180
 
 server:
   port: 8088

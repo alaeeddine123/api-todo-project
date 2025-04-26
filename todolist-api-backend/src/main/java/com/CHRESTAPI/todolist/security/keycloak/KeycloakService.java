@@ -37,6 +37,7 @@ import java.util.List;
 public class KeycloakService {
     private final Keycloak keycloak;
     private final KeycloakProperties keycloakProperties;
+    private final KeycloakClientProperties keycloakClientProperties;
 
     public void registerUser(RegisterRequest request) {
         try {
@@ -98,9 +99,8 @@ public class KeycloakService {
                     keycloakProperties.getRealm(),
                     request.getEmail(),
                     request.getPassword(),
-                    keycloakProperties.getResource(),
-                    keycloakProperties.getCredentials().getSecret()
-            );
+                    keycloakClientProperties.getClientId(),
+                    keycloakClientProperties.getClientSecret());
 
             AccessTokenResponse response = keycloakClient.tokenManager().getAccessToken();
 
@@ -142,7 +142,7 @@ public class KeycloakService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         // Add client authentication
-        String auth = keycloakProperties.getResource() + ":" + keycloakProperties.getCredentials().getSecret();
+        String auth = keycloakClientProperties.getClientId() + ":" + keycloakClientProperties.getClientSecret();
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.US_ASCII));
         String authHeader = "Basic " + new String(encodedAuth);
         headers.set("Authorization", authHeader);
@@ -190,7 +190,7 @@ public class KeycloakService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         // Add client authentication
-        String auth = keycloakProperties.getResource() + ":" + keycloakProperties.getCredentials().getSecret();
+        String auth = keycloakClientProperties.getClientId() + ":" + keycloakClientProperties.getClientSecret();
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.US_ASCII));
         String authHeader = "Basic " + new String(encodedAuth);
         headers.set("Authorization", authHeader);
@@ -198,8 +198,8 @@ public class KeycloakService {
         // Form data
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("token", token);
-        formData.add("client_id", keycloakProperties.getResource());
-        formData.add("client_secret", keycloakProperties.getCredentials().getSecret());
+        formData.add("client_id", keycloakClientProperties.getClientId());
+        formData.add("client_secret", keycloakClientProperties.getClientSecret());
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 

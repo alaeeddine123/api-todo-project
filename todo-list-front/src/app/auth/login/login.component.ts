@@ -18,15 +18,14 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    private formBuilder: FormBuilder,
-    private authenticationService : AuthenticationService,
+    //private formBuilder: FormBuilder,
+    //private authenticationService : AuthenticationService,
     private keycloakService : KeycloakService,
     private router: Router
   ) {}
 
   async ngOnInit() {
-    this.initializeForm();
-
+   // this.initializeForm();
     if (this.keycloakService.isAuthenticated()) {
       console.log('User has an active Keycloak session');
       this.router.navigate(['/espace-user']);
@@ -34,20 +33,20 @@ export class LoginComponent implements OnInit {
     }
 
     // Check local tokens
-    const token = localStorage.getItem('access_token');
+    /*const token = localStorage.getItem('access_token');
     if (token) {
       console.log('User has local tokens, checking validity');
       // Use your existing auth service to verify token
-    }
+    }*/
   }
 
-  private initializeForm(): void {
+  /*private initializeForm(): void {
     this.registerFlag = false;
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
+  } */
 
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
@@ -86,7 +85,7 @@ export class LoginComponent implements OnInit {
       this.errorMessage = ['An error occurred during login'];
     }
   }*/
-  async login() {
+  /*async login() {
     if (this.loginForm.invalid) {
       this.markFormGroupTouched(this.loginForm);
       return;
@@ -117,8 +116,28 @@ export class LoginComponent implements OnInit {
       this.isLoading = false;
       this.errorMessage = ['An error occurred during login'];
     }
+  }*/
+  login() {
+    this.isLoading = true;
+    this.errorMessage = [];
+    try {
+      this.keycloakService.login();
+    } catch (error) {
+      console.error("Login failed", error);
+      this.isLoading = false;
+      this.errorMessage = ['An error occurred during login'];
+    }
   }
-  async logout() {
+
+  logout() {
+    try {
+      this.keycloakService.logout();
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  }
+
+  /*async logout() {
     try {
       console.log('Logging out...');
       await this.authenticationService.logout();
@@ -127,16 +146,16 @@ export class LoginComponent implements OnInit {
       console.error('Logout failed', error);
       this.errorMessage = ['An error occurred during logout'];
     }
-  }
+  }  */
 
-  private markFormGroupTouched(formGroup: FormGroup) {
+  /*private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
       }
     });
-  }
+  } */
 
   register() {
     this.registerFlag = !this.registerFlag;
