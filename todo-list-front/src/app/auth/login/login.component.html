@@ -13,6 +13,34 @@
           <mat-card-title>Log in</mat-card-title>
         </mat-card-header>
 
+        <!-- Using a simple button instead of a form -->
+        <mat-card-content>
+          <button
+            mat-stroked-button
+            color="accent"
+            class="login-button"
+            [disabled]="isLoading"
+            (click)="login()">
+            <span *ngIf="!isLoading">Log in with Keycloak</span>
+            <span *ngIf="isLoading">Logging in...</span>
+          </button>
+
+          <div class="register-quetion">don't have an account?
+            <button
+              mat-stroked-button
+              color="accent"
+              class="register-button"
+              (click)="register()">
+              register
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <!-- <mat-card class="box-login">
+        <mat-card-header>
+          <mat-card-title>Log in</mat-card-title>
+        </mat-card-header>
+
         <form class="example-form" [formGroup]="loginForm" (ngSubmit) ="login()" >
           <mat-card-content>
             <mat-form-field class="example-full-width">
@@ -27,7 +55,7 @@
             </div>
           </mat-card-content>
         </form>
-      </mat-card>
+      </mat-card> -->
     </div>
     <div *ngIf="registerFlag" class="login-wrapper" fxLayout="row" fxLayoutAlign="center center" >
          <app-register>

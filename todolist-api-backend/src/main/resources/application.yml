@@ -31,10 +31,10 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
-application:
-  keycloak:
-    realm: todolist-app
-    auth-server-url: http://localhost:8180
+#application:
+#  keycloak:
+#   realm: todolist-app
+#    auth-server-url: http://localhost:8180
 
 server:
   servlet:

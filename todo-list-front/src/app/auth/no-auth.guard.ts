@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
-import { AuthenticationService } from './auth.service';
 import { KeycloakService } from '../services/keycloak/keycloak.service';
 
 @Injectable({

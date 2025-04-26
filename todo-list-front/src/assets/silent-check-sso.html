@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="">
+<html>
 <head>
-  <title>Silent Check SSO</title>
-  <script>
-    parent.postMessage(location.href, location.origin);
-  </script>
+    <title>Silent Check-Sso</title>
+    <script>
+        window.onload = function() {
+            parent.postMessage(location.href, location.origin);
+        };
+    </script>
 </head>
 <body>
-  <!-- This page is used for silent Keycloak SSO checks -->
+    <!-- Silent SSO check page -->
 </body>
 </html>

@@ -12,21 +12,23 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 @Slf4j
 public class KeycloakConfig {
-     private final KeycloakProperties keycloakProperties;
+
+    private final KeycloakProperties keycloakProperties;
+    private final KeycloakClientProperties clientProperties;
 
     @Bean
     public Keycloak keycloak() {
         log.info("Realm: {}", keycloakProperties.getRealm());
         log.info("Auth Server URL: {}", keycloakProperties.getAuthServerUrl());
-        log.info("Resource: {}", keycloakProperties.getResource());
-        log.info("Client Secret: {}", keycloakProperties.getCredentials().getSecret());
+        log.info("Resource: {}", clientProperties.getClientId());
+        log.info("Client Secret: {}", clientProperties.getClientSecret());
 
         try {
             return KeycloakBuilder.builder()
                 .serverUrl(keycloakProperties.getAuthServerUrl())
                 .realm(keycloakProperties.getRealm())
-                .clientId(keycloakProperties.getResource())
-                .clientSecret(keycloakProperties.getCredentials().getSecret())
+                .clientId(clientProperties.getClientId())
+                .clientSecret(clientProperties.getClientSecret())
                 .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
                 .build();
         } catch (Exception e) {
