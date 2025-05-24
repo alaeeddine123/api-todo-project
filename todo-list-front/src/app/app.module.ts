@@ -69,7 +69,6 @@ function initializeKeycloak(keycloak: KeycloakService, router: Router) {
     MatChipsModule,
     MatTooltipModule,
     // App Modules
-    AuthModule,
     EspaceUserModule,
     SharedModule,
     AppRoutingModule

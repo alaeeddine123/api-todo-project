@@ -1,6 +1,5 @@
-import { catchError } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../../auth/auth.service';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-home',
@@ -27,14 +26,14 @@ export class HomeComponent implements OnInit{
   authService: any;
   router: any;
 
-  constructor(private authenticationService : AuthenticationService) {}
+  constructor(private keycloakService : KeycloakService) {}
 
   ngOnInit(): void {}
 
   onLogout(): void {
     console.log('Logging out...');
-    // Implement logout logic
-    this.authenticationService.logout().subscribe(); }
+    this.keycloakService.logout();
+     }
 
 
 

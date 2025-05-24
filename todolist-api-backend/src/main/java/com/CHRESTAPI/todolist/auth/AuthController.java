@@ -47,6 +47,7 @@ public class AuthController {
         // Get tokens from Keycloak
         TokenResponse tokenResponse = authenticationService.authenticate(request);
         // Set secure cookies
+
         // Access token cookie
         ResponseCookie accessTokenCookie = ResponseCookie.from("ACCESS_TOKEN", tokenResponse.getAccessToken())
                 .httpOnly(true)
@@ -121,7 +122,7 @@ public class AuthController {
             // Clear access token cookie
             ResponseCookie clearAccessCookie = ResponseCookie.from("ACCESS_TOKEN", "")
                     .httpOnly(true)
-                    .secure(false) // Set to true in production
+                    .secure(false)
                     .path("/")
                     .maxAge(0)
                     .sameSite("Lax")
