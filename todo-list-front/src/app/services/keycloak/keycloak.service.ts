@@ -37,7 +37,7 @@ export class KeycloakService {
       const hasAuthParams = window.location.hash.includes('code=') || window.location.hash.includes('state=');
 
       this._keycloak.init({
-        onLoad: 'check-sso' as const,
+        onLoad: 'login-required' as const,
         silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
         checkLoginIframe: false
       })

@@ -31,6 +31,13 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             .requestMatchers("/project/**").hasRole("USER")
+            // Admin-only endpoints
+            .requestMatchers("/api/admin/**").hasRole("admin")
+            // Shop owner endpoints
+            .requestMatchers("/api/shop/**").hasAnyRole("admin", "shopowner")
+            // User endpoints
+            .requestMatchers("/project/**").hasAnyRole("USER", "admin", "shopowner")
+
             .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2.permitAll()) // Method reference doesn't work here, use lambda
@@ -47,7 +54,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
         grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
