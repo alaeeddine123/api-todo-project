@@ -6,8 +6,8 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError, from } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { KeycloakService } from '../services/keycloak/keycloak.service';
 
 @Injectable()
@@ -15,43 +15,45 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private keycloakService: KeycloakService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Skip Keycloak URLs
     if (request.url.startsWith(this.keycloakService.authServerUrl!)) {
       return next.handle(request);
     }
 
-    return from(this.handleIntercept(request, next));
-  }
+    // Add token to API requests
+    const token = this.keycloakService.getToken();
+    console.log('🔍 Interceptor Debug:');
+    console.log('- Token available:', !!token);
+    console.log('- Token (first 50 chars):', token?.substring(0, 50));
+    console.log('- Request URL:', request.url);
 
-  private async handleIntercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Promise<HttpEvent<any>> {
-    try {
-      const token = await this.keycloakService.instance.token;
-      if (token) {
-        request = request.clone({
-          setHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      }
-      return next.handle(request).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 401 && !request.url.includes('/auth/')) {
-            return from(this.keycloakService.instance.updateToken(5)).pipe(
-              catchError(() => {
-                this.keycloakService.login();
-                return throwError(() => error);
-              }),
-              switchMap(() => from(this.handleIntercept(request, next)))
-            );
-          }
-          return throwError(() => error);
-        })
-      ).toPromise() as Promise<HttpEvent<any>>;
-    } catch (error) {
-      console.error('Failed to get token:', error);
-      return next.handle(request).toPromise() as Promise<HttpEvent<any>>;
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('✅ Added Authorization header');
+    } else {
+      console.warn('❌ No token available');
     }
+
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('🚨 HTTP Error:', {
+          status: error.status,
+          statusText: error.statusText,
+          url: error.url,
+          message: error.message
+        });
+
+        if (error.status === 401) {
+          console.log('🔄 401 Unauthorized - redirecting to login');
+          this.keycloakService.login();
+        }
+
+        return throwError(() => error);
+      })
+    );
   }
 }
