@@ -30,6 +30,10 @@ const routes: Routes = [
     loadChildren: () => import('./espace-user/espace-user.module').then(m => m.EspaceUserModule)
   },
   {
+    path: 'targets',
+    loadChildren: () => import('./targets/targets.module').then(m => m.TargetsModule)
+  },
+  {
     path: '**',
     redirectTo: '/espace-user/dashboard'
   }

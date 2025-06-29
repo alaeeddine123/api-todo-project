@@ -10,6 +10,13 @@
   margin-bottom: 24px;
 
   mat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
     .card-content {
       display: flex;
       align-items: center;
@@ -44,27 +51,175 @@
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 24px;
 
-  .chart-card,
-  .tasks-card {
+  .chart-card {
     height: 400px;
   }
 
-  .tasks-card {
-    .task-item {
-      width: 100%;
+  .stock-prices-card {
+    height: 400px;
 
-      .task-info {
+    .companies-list {
+      max-height: 300px;
+      overflow-y: auto;
+
+      .company-item {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 16px;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
 
-        .task-title {
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.02);
+          border-radius: 8px;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .company-info {
           flex: 1;
+
+          .company-name {
+            font-weight: 500;
+            font-size: 14px;
+          }
+
+          .company-ticker {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.6);
+          }
+        }
+
+        .price-section {
+          flex: 1;
+          text-align: center;
+
+          .current-price {
+            font-weight: 500;
+          }
+
+          .price-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+
+            &.success {
+              color: #4caf50;
+            }
+
+            &.danger {
+              color: #f44336;
+            }
+
+            .change-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+
+        .analysis-section {
+          flex: 1;
+          text-align: right;
+
+          .recommendation {
+            font-size: 10px;
+            margin-top: 4px;
+            color: rgba(0, 0, 0, 0.6);
+          }
         }
       }
     }
   }
+
+  .analysis-queue-card {
+    height: 400px;
+
+    mat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .analysis-item {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+        border-radius: 8px;
+      }
+
+      .analysis-info {
+        flex: 1;
+        display: flex;
+        flex-direction : row;
+        align-items: baseline;
+        justify-content: space-between;
+
+        .company-name {
+          font-weight: 500;
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        .analysis-details {
+          margin-top: 4px;
+        }
+      }
+
+      .view-icon {
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+
+  .quick-actions-card {
+    height: 400px;
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+
+      .action-button {
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+}
+
+// Color utilities
+.success {
+  color: #4caf50 !important;
+}
+
+.danger {
+  color: #f44336 !important;
+}
+
+.warning {
+  color: #ff9800 !important;
 }
 
 // Responsive adjustments
@@ -73,12 +228,22 @@
     padding: 16px;
   }
 
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
   .content-grid {
     grid-template-columns: 1fr;
 
     .chart-card,
-    .tasks-card {
+    .stock-prices-card,
+    .analysis-queue-card,
+    .quick-actions-card {
       height: auto;
+    }
+
+    .stock-prices-card .companies-list {
+      max-height: 250px;
     }
   }
 }

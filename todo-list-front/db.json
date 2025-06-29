@@ -1,0 +1,94 @@
+{
+  "targets": [
+    {
+      "id": 1,
+      "companyName": "Tesla Inc.",
+      "ticker": "TSLA",
+      "website": "tesla.com",
+      "industry": ["Electric Vehicles", "Automotive", "Technology"],
+      "acquisitionPurpose": "Expand into electric vehicle market and gain advanced battery technology capabilities",
+      "budgetRange": "$50B - $100B",
+      "timeline": "6 months",
+      "priorityLevel": "HIGH",
+      "notes": "Key target for Q1 strategic review. Monitor stock price and any M&A rumors.",
+      "createdAt": "2025-01-26T10:00:00.000Z",
+      "updatedAt": "2025-01-27T15:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "companyName": "Lemonade Inc.",
+      "ticker": "LMND",
+      "website": "lemonade.com",
+      "industry": ["InsurTech", "AI", "Insurance"],
+      "acquisitionPurpose": "Digital insurance transformation and AI-driven claims processing capabilities",
+      "budgetRange": "$1B - $5B",
+      "timeline": "1 year",
+      "priorityLevel": "MEDIUM",
+      "notes": "Interesting AI technology, growing customer base in younger demographics.",
+      "createdAt": "2025-01-21T14:20:00.000Z",
+      "updatedAt": "2025-01-22T09:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "companyName": "Stripe Inc.",
+      "ticker": "STRIPE",
+      "website": "stripe.com",
+      "industry": ["FinTech", "Payments", "SaaS"],
+      "acquisitionPurpose": "Payment infrastructure for global expansion and comprehensive financial services platform",
+      "budgetRange": "Over $100B",
+      "timeline": "2+ years",
+      "priorityLevel": "LOW",
+      "notes": "Long-term strategic consideration. Very high valuation, complex integration.",
+      "createdAt": "2025-01-10T11:45:00.000Z",
+      "updatedAt": "2025-01-15T16:20:00.000Z"
+    },
+    {
+      "id": 4,
+      "companyName": "Palantir Technologies",
+      "ticker": "PLTR",
+      "website": "palantir.com",
+      "industry": ["Data Analytics", "Software", "Government"],
+      "acquisitionPurpose": "Advanced data analytics and government contract capabilities",
+      "budgetRange": "$20B - $50B",
+      "timeline": "6 months",
+      "priorityLevel": "HIGH",
+      "notes": "Strong government relationships, unique data platform.",
+      "createdAt": "2025-01-20T13:10:00.000Z",
+      "updatedAt": "2025-01-25T10:40:00.000Z"
+    },
+    {
+      "id": 5,
+      "companyName": "Snowflake Inc.",
+      "ticker": "SNOW",
+      "website": "snowflake.com",
+      "industry": ["Cloud Computing", "Data Warehousing", "Software"],
+      "acquisitionPurpose": "Cloud data platform and analytics capabilities for digital transformation",
+      "budgetRange": "$20B - $50B",
+      "timeline": "1 year",
+      "priorityLevel": "MEDIUM",
+      "notes": "Strong growth in cloud data market, good technical team.",
+      "createdAt": "2025-01-15T09:30:00.000Z",
+      "updatedAt": "2025-01-18T14:25:00.000Z"
+    }
+  ],
+  "analyses": [
+    {
+      "id": 1,
+      "targetId": 1,
+      "status": "completed",
+      "overallScore": 85,
+      "recommendation": "STRONG_BUY",
+      "createdAt": "2025-01-27T10:00:00.000Z",
+      "completedAt": "2025-01-27T12:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "targetId": 2,
+      "status": "in_progress",
+      "overallScore": null,
+      "recommendation": null,
+      "createdAt": "2025-01-28T09:15:00.000Z",
+      "completedAt": null
+    }
+  ]
+}

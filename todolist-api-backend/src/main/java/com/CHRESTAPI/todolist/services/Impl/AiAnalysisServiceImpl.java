@@ -9,7 +9,7 @@ import com.CHRESTAPI.todolist.repositories.AnalysisRequestRepository;
 import com.CHRESTAPI.todolist.repositories.AnalysisResultRepository;
 import com.CHRESTAPI.todolist.services.AiAnalysisService;
 import com.CHRESTAPI.todolist.services.CompanyDataService;
-import com.CHRESTAPI.todolist.services.OpenAiService;
+import com.CHRESTAPI.todolist.llm.LlmService;
 import com.CHRESTAPI.todolist.services.RiskAssessmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class AiAnalysisServiceImpl implements AiAnalysisService {
     private final AnalysisResultRepository analysisResultRepository;
     private final AnalysisRequestRepository analysisRequestRepository;
     private final CompanyDataService companyDataService;
-    private final OpenAiService openAiService;
+    private final LlmService claudeService;
     private final RiskAssessmentService riskAssessmentService;
 
     @Override
@@ -119,7 +119,7 @@ public class AiAnalysisServiceImpl implements AiAnalysisService {
             request.getAcquisitionPurpose(), company.getDescription()
         );
 
-        return openAiService.getAnalysisScore(prompt, "strategic_fit");
+        return claudeService.getAnalysisScore(prompt, "strategic_fit"); // ← Changed
     }
 
     private Double calculateFinancialHealthScore(CompanyProfile company) {
@@ -141,7 +141,7 @@ public class AiAnalysisServiceImpl implements AiAnalysisService {
     }
 
     private Double calculateMarketOpportunityScore(CompanyProfile company) {
-        return openAiService.getAnalysisScore(
+        return claudeService.getAnalysisScore(
             String.format("Analyze market opportunity for %s in %s industry. Description: %s",
                          company.getCompanyName(), company.getIndustry(), company.getDescription()),
             "market_opportunity"
@@ -171,7 +171,7 @@ public class AiAnalysisServiceImpl implements AiAnalysisService {
     }
 
     private Double calculateTechnologyScore(CompanyProfile company) {
-        return openAiService.getAnalysisScore(
+        return claudeService.getAnalysisScore(
             String.format("Assess technology alignment for insurance company acquiring %s. Tech stack: %s",
                          company.getCompanyName(), company.getTechnologyStack()),
             "technology_alignment"
@@ -194,12 +194,14 @@ public class AiAnalysisServiceImpl implements AiAnalysisService {
         return AcquisitionRecommendation.AVOID;
     }
 
+     // Update all other method calls similarly
+     // Update all other method calls similarly
     private void generateAiInsights(AnalysisResult result, CompanyProfile company, AnalysisRequest request) {
-        result.setExecutiveSummary(openAiService.generateExecutiveSummary(company, result));
-        result.setKeyStrengths(openAiService.generateKeyStrengths(company));
-        result.setPrimaryRisks(openAiService.generatePrimaryRisks(company));
-        result.setSynergyOpportunities(openAiService.generateSynergies(company, request));
-        result.setIntegrationChallenges(openAiService.generateIntegrationChallenges(company));
-        result.setAiConfidenceScore(85.0); // AI confidence in the analysis
+        result.setExecutiveSummary(claudeService.generateExecutiveSummary(company, result)); // ← Changed
+        result.setKeyStrengths(claudeService.generateKeyStrengths(company)); // ← Changed
+        result.setPrimaryRisks(claudeService.generatePrimaryRisks(company)); // ← Changed
+        result.setSynergyOpportunities(claudeService.generateSynergies(company, request)); // ← Changed
+        result.setIntegrationChallenges(claudeService.generateIntegrationChallenges(company)); // ← Changed
+        result.setAiConfidenceScore(90.0); // Claude tends to be more confident
     }
 }

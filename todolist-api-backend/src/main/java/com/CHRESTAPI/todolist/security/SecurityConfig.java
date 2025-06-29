@@ -32,7 +32,8 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             .requestMatchers("/api/v1/project/**").hasAnyRole("USER", "admin", "shopowner")
-            // Admin-only endpoints
+             .requestMatchers("/api/test/**").permitAll() // ← ADD THIS LINE
+             // Admin-only endpoints
             .requestMatchers("/api/admin/**").hasRole("admin")
             // Shop owner endpoints
             .requestMatchers("/api/shop/**").hasAnyRole("admin", "shopowner")
