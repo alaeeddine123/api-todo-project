@@ -52,6 +52,7 @@ const materialModules = [
 ];
 
 const sharedComponents = [
+
   HeaderComponent,
   LayoutComponent
 ];

@@ -1,0 +1,44 @@
+<!-- sidenav.component.html -->
+<div class="sidenav-content">
+  <!-- Platform Logo/Brand -->
+  <div class="sidenav-header">
+    <div class="platform-brand">
+      <mat-icon class="brand-icon">business_center</mat-icon>
+      <span class="brand-text">M&A Hub</span>
+    </div>
+  </div>
+
+  <!-- Main Navigation Menu -->
+  <div class="menu-section">
+    <div class="section-title">Navigation</div>
+    <mat-nav-list class="menu-items">
+      <a mat-list-item
+         *ngFor="let item of menuItems"
+         [routerLink]="item.route"
+         routerLinkActive="active-link"
+         [ngClass]="{'highlight-item': item.highlight}">
+        <mat-icon matListItemIcon class="menu-icon">{{item.icon}}</mat-icon>
+        <span matListItemTitle class="menu-text">{{item.text}}</span>
+      </a>
+    </mat-nav-list>
+  </div>
+
+  <!-- Quick Stats Section -->
+  <div class="menu-section quick-stats" *ngIf="isOpen">
+    <div class="section-title">Quick Stats</div>
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-label">Active Analyses</span>
+        <span class="stat-value">4</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">This Week</span>
+        <span class="stat-value">12</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Avg Score</span>
+        <span class="stat-value">72.5</span>
+      </div>
+    </div>
+  </div>
+</div>

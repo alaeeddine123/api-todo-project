@@ -1,0 +1,158 @@
+/* main-layout.component.scss */
+.main-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidenav-container {
+  flex: 1;
+  height: calc(100vh - 70px); /* Subtract new header height */
+  position: relative;
+}
+
+.app-sidenav {
+  width: 280px;
+  border-right: none;
+  background: transparent;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f1f3f4 100%);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(108, 92, 231, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.content-wrapper {
+  padding: 32px;
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #667eea, #764ba2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5a67d8, #6b46c1);
+    background-clip: content-box;
+  }
+}
+
+/* Header positioning */
+::ng-deep .app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 70px;
+}
+
+/* Sidenav animation */
+::ng-deep mat-sidenav {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+::ng-deep mat-sidenav-content {
+  transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+/* Loading animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-wrapper {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Focus styles for accessibility */
+::ng-deep .app-sidenav {
+  a:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .app-sidenav {
+    width: 260px;
+  }
+
+  .content-wrapper {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-sidenav {
+    width: 240px;
+  }
+
+  .content-wrapper {
+    padding: 16px;
+  }
+
+  .sidenav-container {
+    height: calc(100vh - 64px);
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 12px;
+  }
+}
+
+/* Dark mode support (if needed later) */
+@media (prefers-color-scheme: dark) {
+  .main-layout {
+    background: #1a1a1a;
+  }
+
+  .main-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1e1e1e 100%);
+  }
+}
