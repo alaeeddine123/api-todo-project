@@ -20,46 +20,38 @@ const authCheck: CanActivateFn = () => {
 };
 
 const routes: Routes = [
-  // Root redirect
   {
     path: '',
     redirectTo: '/app/dashboard',
     pathMatch: 'full'
   },
-
-  // Main app layout with all authenticated routes
   {
-    path: 'app',  // Changed from '' to 'app' to avoid conflict
+    path: 'app',
     component: MainLayoutComponent,
     canActivate: [authCheck],
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./espace-user/espace-user.module').then(m => m.EspaceUserModule)
+        loadChildren: () => import('./espace-user/espace-user.module').then(m => m.EspaceUserModule),
+        data: {
+          breadcrumb: [
+            { label: 'Dashboard', icon: 'dashboard' }
+          ]
+        }
       },
       {
         path: 'targets',
-        loadChildren: () => import('./targets/targets.module').then(m => m.TargetsModule)
+        loadChildren: () => import('./targets/targets.module').then(m => m.TargetsModule),
+        data: {
+          breadcrumb: [
+            { label: 'Dashboard', route: '/app/dashboard', icon: 'dashboard' },
+            { label: 'Target Companies' }
+          ]
+        }
       }
     ]
   },
-
-  // Legacy redirects
-  {
-    path: 'espace-user',
-    redirectTo: '/app/dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: 'espace-user/**',
-    redirectTo: '/app/dashboard'
-  },
-
-  // Fallback
-  {
-    path: '**',
-    redirectTo: '/app/dashboard'
-  }
+  // ... rest of your routes
 ];
 
 @NgModule({

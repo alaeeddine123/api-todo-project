@@ -9,6 +9,8 @@ import { takeUntil } from 'rxjs/operators';
 import { TargetCompany } from '@targets/models/target.model';
 import { TargetService } from '../../services/target.service';
 import { AddTargetComponent } from '../add-target/add-target.component';
+import { Router } from '@angular/router';
+import { PRIORITY_FILTER_OPTIONS } from '@app/targets/constants/target-form-constants';
 
 @Component({
   selector: 'app-target-list',
@@ -16,25 +18,21 @@ import { AddTargetComponent } from '../add-target/add-target.component';
   styleUrls: ['./target-list.component.scss']
 })
 export class TargetListComponent implements OnInit, OnDestroy {
+
+  priorityOptions = PRIORITY_FILTER_OPTIONS;
+
   targets: TargetCompany[] = [];
   filteredTargets: TargetCompany[] = [];
   searchQuery = '';
   selectedPriority = 'ALL';
   isLoading = false;
-
-  priorityOptions = [
-    { value: 'ALL', label: 'All Priorities' },
-    { value: 'HIGH', label: 'High Priority' },
-    { value: 'MEDIUM', label: 'Medium Priority' },
-    { value: 'LOW', label: 'Low Priority' }
-  ];
-
   private destroy$ = new Subject<void>();
 
   constructor(
     private targetService: TargetService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -63,19 +61,8 @@ export class TargetListComponent implements OnInit, OnDestroy {
         }
       });
   }
-
   onAddTarget(): void {
-    const dialogRef = this.dialog.open(AddTargetComponent, {
-      width: '600px',
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadTargets(); // Refresh the list
-        this.showSnackBar('Target added successfully!');
-      }
-    });
+    this.router.navigate(['/app/targets/add']);
   }
 
   onEditTarget(target: TargetCompany): void {

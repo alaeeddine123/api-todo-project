@@ -16,12 +16,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
+import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
     HeaderComponent,
-    SidenavComponent
+    SidenavComponent,
+    BreadcrumbComponent
   ],
   imports: [
     CommonModule,

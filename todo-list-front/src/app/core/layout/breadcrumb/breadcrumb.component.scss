@@ -1,0 +1,26 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  color: #666;
+
+  a {
+    color: #5566ff;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+  }
+
+  span {
+    display: flex;
+  }
+
+
+
+  mat-icon {
+    font-size: 18px;
+    margin: 0 8px;
+  }
+}

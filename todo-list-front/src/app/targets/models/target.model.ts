@@ -16,15 +16,25 @@ export interface TargetCompany {
 }
 
 export interface CreateTargetDto {
+  // Basic Information
   companyName: string;
-  ticker?: string;
+  tickerSymbol?: string;
   website?: string;
-  industry: string[];
-  acquisitionPurpose: string;
-  budgetRange: string;
-  timeline: string;
-  priorityLevel: 'HIGH' | 'MEDIUM' | 'LOW';
-  notes?: string;
+
+  // Financial Information
+  marketCap?: string;
+  annualRevenue?: string;
+  industry: string;
+
+  // Strategic Information
+  priority: 'high' | 'medium' | 'low';
+  dealStatus: 'research' | 'contact' | 'negotiation' | 'due_diligence';
+  strategicRationale?: string;
+
+  // Additional Details
+  headquarters?: string;
+  employeeCount?: number;
+  foundedYear?: number;
 }
 
 export interface UpdateTargetDto extends Partial<CreateTargetDto> {
