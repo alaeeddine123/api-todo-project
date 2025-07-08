@@ -3,6 +3,7 @@ import { RouterModule, Routes, CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { KeycloakService } from './services/keycloak/keycloak.service';
 import { map, take } from 'rxjs';
+import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 
 const authCheck: CanActivateFn = () => {
   const keycloakService = inject(KeycloakService);
@@ -21,18 +22,36 @@ const authCheck: CanActivateFn = () => {
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/espace-user/dashboard',
+    redirectTo: '/app/dashboard',
     pathMatch: 'full'
   },
   {
-    path: 'espace-user',
+    path: 'app',
+    component: MainLayoutComponent,
     canActivate: [authCheck],
-    loadChildren: () => import('./espace-user/espace-user.module').then(m => m.EspaceUserModule)
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./espace-user/espace-user.module').then(m => m.EspaceUserModule),
+        data: {
+          breadcrumb: [
+            { label: 'Dashboard', icon: 'dashboard' }
+          ]
+        }
+      },
+      {
+        path: 'targets',
+        loadChildren: () => import('./targets/targets.module').then(m => m.TargetsModule),
+        data: {
+          breadcrumb: [
+            { label: 'Dashboard', route: '/app/dashboard', icon: 'dashboard' },
+            { label: 'Target Companies' }
+          ]
+        }
+      }
+    ]
   },
-  {
-    path: '**',
-    redirectTo: '/espace-user/dashboard'
-  }
+  // ... rest of your routes
 ];
 
 @NgModule({

@@ -1,0 +1,13 @@
+<nav class="breadcrumb" *ngIf="items.length > 0">
+  <ng-container *ngFor="let item of items; let last = last">
+    <a *ngIf="!last && item.route" [routerLink]="item.route" mat-button >
+      <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+      {{item.label}}
+    </a>
+    <span *ngIf="last">
+      <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+      {{item.label}}
+    </span>
+    <mat-icon *ngIf="!last">chevron_right</mat-icon>
+  </ng-container>
+</nav>

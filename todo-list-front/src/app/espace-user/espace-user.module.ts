@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home/home.component';
 import { EspaceUserRoutingModule } from './espace-user-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { TaskListDisplayComponent } from './task-list-display/task-list-display.component';
@@ -12,17 +11,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MyProjectsComponent } from './my-projects/my-projects.component';
 
 
 
 @NgModule({
   declarations: [
-    HomeComponent,
     TaskListDisplayComponent,
     CreateProjectComponent,
     DashBoardComponent,
-    MyProjectsComponent
   ],
   imports: [
     CommonModule,

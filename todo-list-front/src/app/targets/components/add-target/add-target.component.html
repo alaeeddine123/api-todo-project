@@ -1,0 +1,167 @@
+<!-- src/app/targets/components/add-target/add-target.component.html -->
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>🎯 ADD NEW TARGET COMPANY</h1>
+      <p>Add companies to your acquisition pipeline for analysis and tracking</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="onCancel()" type="button">
+        <mat-icon>arrow_back</mat-icon> Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <form [formGroup]="targetForm" (ngSubmit)="onSubmit()" class="form-container">
+
+    <!-- Basic Company Information -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>business</mat-icon>
+          Company Information
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Company Name *</mat-label>
+            <input matInput formControlName="companyName" required>
+            <mat-error *ngIf="targetForm.get('companyName')?.invalid && targetForm.get('companyName')?.touched">
+              {{getErrorMessage('companyName')}}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Ticker Symbol</mat-label>
+            <input matInput formControlName="tickerSymbol" placeholder="e.g., AAPL">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Website</mat-label>
+            <input matInput formControlName="website" placeholder="https://example.com">
+            <mat-icon matSuffix>language</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Headquarters</mat-label>
+            <input matInput formControlName="headquarters" placeholder="City, Country">
+            <mat-icon matSuffix>location_on</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Financial Information -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>attach_money</mat-icon>
+          Financial Overview
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Market Cap</mat-label>
+            <input matInput formControlName="marketCap" placeholder="e.g., 2.5B">
+            <span matSuffix>USD</span>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Annual Revenue</mat-label>
+            <input matInput formControlName="annualRevenue" placeholder="e.g., 500M">
+            <span matSuffix>USD</span>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Industry *</mat-label>
+            <mat-select formControlName="industry" required>
+              <mat-option *ngFor="let industry of industries" [value]="industry.value">
+                {{industry.label}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="targetForm.get('industry')?.invalid && targetForm.get('industry')?.touched">
+              Industry is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Employee Count</mat-label>
+            <input matInput formControlName="employeeCount" type="number" placeholder="e.g., 1500">
+            <mat-icon matSuffix>people</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Founded Year</mat-label>
+            <input matInput formControlName="foundedYear" type="number" placeholder="e.g., 2010">
+            <mat-icon matSuffix>calendar_today</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Strategic Information -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>trending_up</mat-icon>
+          Strategic Analysis
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Priority Level *</mat-label>
+            <mat-select formControlName="priority" required>
+              <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+                {{priority.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Deal Status *</mat-label>
+            <mat-select formControlName="dealStatus" required>
+              <mat-option *ngFor="let status of dealStatuses" [value]="status.value">
+                {{status.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Strategic Rationale</mat-label>
+          <textarea matInput
+                    formControlName="strategicRationale"
+                    rows="4"
+                    placeholder="Why is this company a strategic fit? What synergies do you expect?">
+          </textarea>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button mat-button type="button" (click)="onCancel()" [disabled]="isLoading">
+        Cancel
+      </button>
+      <button mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="targetForm.invalid || isLoading">
+        <mat-icon *ngIf="isLoading">
+          <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+        </mat-icon>
+        <mat-icon *ngIf="!isLoading">add</mat-icon>
+        {{isLoading ? 'Adding...' : 'Add Target Company'}}
+      </button>
+    </div>
+  </form>
+</div>

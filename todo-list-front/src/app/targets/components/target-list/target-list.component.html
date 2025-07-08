@@ -1,0 +1,170 @@
+<!-- src/app/targets/components/target-list/target-list.component.html -->
+
+<div class="target-list-container">
+
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="page-title">
+      <h1>🎯 Target Companies</h1>
+      <p>Manage your acquisition pipeline</p>
+    </div>
+    <button mat-raised-button color="primary" class="add-button" (click)="onAddTarget()">
+      <mat-icon>add_business</mat-icon>
+      Add New Target
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-row">
+
+        <!-- Search Input -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search targets...</mat-label>
+          <input matInput
+                 [(ngModel)]="searchQuery"
+                 (input)="onSearch()"
+                 placeholder="Company name, ticker, industry...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Priority Filter -->
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Priority Level</mat-label>
+          <mat-select [(value)]="selectedPriority" (selectionChange)="onFilterByPriority()">
+            <mat-option *ngFor="let option of priorityOptions" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Results Count -->
+        <div class="results-info">
+          <span class="results-text">
+            {{ filteredTargets.length }} of {{ targets.length }} targets
+          </span>
+        </div>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading targets...</p>
+  </div>
+
+  <!-- Empty State -->
+  <mat-card *ngIf="!isLoading && targets.length === 0" class="empty-state">
+    <mat-card-content>
+      <div class="empty-content">
+        <mat-icon class="empty-icon">business_center</mat-icon>
+        <h2>No targets yet</h2>
+        <p>Start building your acquisition pipeline by adding your first target company.</p>
+        <button mat-raised-button color="primary" (click)="onAddTarget()">
+          <mat-icon>add</mat-icon>
+          Add Your First Target
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- No Results State -->
+  <mat-card *ngIf="!isLoading && targets.length > 0 && filteredTargets.length === 0" class="empty-state">
+    <mat-card-content>
+      <div class="empty-content">
+        <mat-icon class="empty-icon">search_off</mat-icon>
+        <h2>No matching targets</h2>
+        <p>Try adjusting your search or filter criteria.</p>
+        <button mat-button (click)="searchQuery = ''; selectedPriority = 'ALL'; onSearch()">
+          Clear Filters
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Targets List -->
+  <div *ngIf="!isLoading && filteredTargets.length > 0" class="targets-grid">
+
+    <mat-card *ngFor="let target of filteredTargets" class="target-card">
+      <mat-card-content>
+
+        <!-- Target Header -->
+        <div class="target-header">
+          <div class="company-info">
+            <h3 class="company-name">{{ target.companyName }}</h3>
+            <span *ngIf="target.ticker" class="ticker">[{{ target.ticker }}]</span>
+          </div>
+          <mat-chip [color]="getPriorityColor(target.priorityLevel)" selected>
+            <mat-icon matChipAvatar>{{ getPriorityIcon(target.priorityLevel) }}</mat-icon>
+            {{ target.priorityLevel }}
+          </mat-chip>
+        </div>
+
+        <!-- Industry Tags -->
+        <div class="industry-tags">
+          <mat-chip *ngFor="let industry of target.industry" class="industry-chip">
+            {{ industry }}
+          </mat-chip>
+        </div>
+
+        <!-- Acquisition Details -->
+        <div class="acquisition-details">
+          <div class="detail-row">
+            <mat-icon class="detail-icon">attach_money</mat-icon>
+            <span>Budget: <strong>{{ target.budgetRange }}</strong></span>
+          </div>
+          <div class="detail-row">
+            <mat-icon class="detail-icon">schedule</mat-icon>
+            <span>Timeline: <strong>{{ target.timeline }}</strong></span>
+          </div>
+        </div>
+
+        <!-- Purpose -->
+        <div class="purpose-section">
+          <p class="purpose-text">"{{ target.acquisitionPurpose }}"</p>
+        </div>
+
+        <!-- Meta Information -->
+        <div class="meta-info">
+          <span class="added-date">
+            <mat-icon class="meta-icon">calendar_today</mat-icon>
+            Added {{ formatDate(target.createdAt) }}
+          </span>
+          <span *ngIf="target.updatedAt && target.updatedAt !== target.createdAt" class="updated-date">
+            <mat-icon class="meta-icon">edit</mat-icon>
+            Updated {{ formatDate(target.updatedAt) }}
+          </span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button mat-button (click)="onEditTarget(target)" matTooltip="Edit Target">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+
+          <button mat-raised-button
+                  color="primary"
+                  (click)="onStartAnalysis(target)"
+                  matTooltip="Start Analysis">
+            <mat-icon>rocket_launch</mat-icon>
+            Analyze
+          </button>
+
+          <button mat-icon-button
+                  color="warn"
+                  (click)="onDeleteTarget(target)"
+                  matTooltip="Delete Target">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+</div>

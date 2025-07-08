@@ -27,6 +27,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { KeycloakService } from './services/keycloak/keycloak.service';
 import { Router } from '@angular/router';
+import { CoreModule } from './core/core.module';
 
 
 function initializeKeycloak(keycloak: KeycloakService, router: Router) {
@@ -34,13 +35,7 @@ function initializeKeycloak(keycloak: KeycloakService, router: Router) {
     console.log("Initializing Keycloak from APP_INITIALIZER");
     return keycloak.init().then(authenticated => {
       console.log("Keycloak initialization complete, authenticated:", authenticated);
-      if (authenticated) {
-        const hasAuthParams = window.location.hash.includes('code=') || window.location.hash.includes('state=');
-        if (hasAuthParams) {
-          window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-          console.log("URL hash cleaned in APP_INITIALIZER");
-        }
-      }
+      // Remove the URL cleaning code from here since it's now in KeycloakService
       return authenticated;
     });
   };
@@ -71,6 +66,7 @@ function initializeKeycloak(keycloak: KeycloakService, router: Router) {
     // App Modules
     EspaceUserModule,
     SharedModule,
+    CoreModule,
     AppRoutingModule
   ],
   providers: [

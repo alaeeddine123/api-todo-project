@@ -1,0 +1,33 @@
+<!-- main-layout.component.html -->
+<div class="main-layout">
+  <!-- Header always visible -->
+  <app-header
+    [user]="user"
+    [isSidenavOpen]="isSidenavOpen"
+    (toggleSidenav)="onToggleSidenav()"
+    (logout)="onLogout()">
+  </app-header>
+
+  <!-- Material Design Sidenav Container -->
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidenav -->
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      [opened]="isSidenavOpen"
+      class="app-sidenav">
+      <app-sidenav
+        [isOpen]="isSidenavOpen"
+        [menuItems]="menuItems">
+      </app-sidenav>
+    </mat-sidenav>
+
+    <!-- Main content area -->
+    <mat-sidenav-content class="main-content">
+      <div class="content-wrapper">
+        <app-breadcrumb></app-breadcrumb>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
