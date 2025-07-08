@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "noImplicitAny": false,
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -19,6 +20,13 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "baseUrl": "src",
+    "paths": {
+      "@environments/*": ["environments/*"],
+      "@app/*": ["app/*"],
+      "@targets/*": ["app/targets/*"],
+      "@shared/*": ["app/shared/*"]
+    },
     "lib": [
       "ES2022",
       "dom"

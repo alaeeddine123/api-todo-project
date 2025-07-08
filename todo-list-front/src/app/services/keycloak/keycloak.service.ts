@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import Keycloak from 'keycloak-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -12,7 +13,7 @@ export class KeycloakService {
   private _authenticationState = new BehaviorSubject<boolean>(false);
   isAuthenticated$: Observable<boolean> = this._authenticationState.asObservable();
 
-  constructor() {
+  constructor(private router: Router) {
     this._keycloak = new Keycloak({
       url: 'http://localhost:8180',
       realm: 'todolist-app',
@@ -50,9 +51,20 @@ export class KeycloakService {
         if (authenticated) {
           console.log("User has an active Keycloak session");
           this.setupTokenRefresh();
+
           if (hasAuthParams) {
+            console.log("Processing OAuth callback, cleaning URL and navigating...");
+            // Clean the URL
             window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-            console.log("URL hash cleaned after successful authentication");
+
+            // Navigate to the dashboard after a short delay to ensure DOM is ready
+            setTimeout(() => {
+              this.router.navigate(['/app/dashboard']).then(() => {
+                console.log("Successfully navigated to /app/dashboard");
+              }).catch(err => {
+                console.error("Navigation error:", err);
+              });
+            }, 100);
           }
         }
         resolve(authenticated);
@@ -82,7 +94,8 @@ export class KeycloakService {
 
   login(): void {
     this._keycloak.login({
-      redirectUri: window.location.origin + '/espace-user/dashboard'
+      // Fixed: Use the correct route that matches your routing
+      redirectUri: window.location.origin + '/app/dashboard'
     });
   }
 

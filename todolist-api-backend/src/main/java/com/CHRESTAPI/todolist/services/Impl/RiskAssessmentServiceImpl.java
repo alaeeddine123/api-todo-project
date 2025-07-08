@@ -47,20 +47,14 @@ public class RiskAssessmentServiceImpl implements RiskAssessmentService {
     public List<RiskFactor> assessRiskCategory(CompanyProfile company, RiskCategory category) {
         log.info("Assessing {} risks for: {}", category, company.getCompanyName());
 
-        switch (category) {
-            case FINANCIAL:
-                return generateFinancialRisks(company);
-            case OPERATIONAL:
-                return generateOperationalRisks(company);
-            case REGULATORY:
-                return generateRegulatoryRisks(company);
-            case TECHNOLOGY:
-                return generateTechnologyRisks(company);
-            case MARKET:
-                return generateMarketRisks(company);
-            default:
-                return new ArrayList<>();
-        }
+        return switch (category) {
+            case FINANCIAL -> generateFinancialRisks(company);
+            case OPERATIONAL -> generateOperationalRisks(company);
+            case REGULATORY -> generateRegulatoryRisks(company);
+            case TECHNOLOGY -> generateTechnologyRisks(company);
+            case MARKET -> generateMarketRisks(company);
+            default -> new ArrayList<>();
+        };
     }
 
     @Override
