@@ -40,13 +40,14 @@ export class TargetService {
       updatedAt: new Date().toISOString()
     };
 
+
     return this.http.post<TargetCompany>(`${this.API_URL}/targets`, newTarget)
       .pipe(
         tap(() => this.loadTargets()) // Refresh the list
       );
   }
 
-  // Update target
+  // Update targetÒ
   updateTarget(id: number, target: UpdateTargetDto): Observable<TargetCompany> {
     const updatedTarget = {
       ...target,

@@ -3,7 +3,7 @@ export const environment = {
   production: false,
 
   // API Configuration
-  apiUrl: 'http://localhost:3001',
+  apiUrl: 'http://localhost:8088/api/v1',
   apiTimeout: 30000,
 
   // Feature Flags
