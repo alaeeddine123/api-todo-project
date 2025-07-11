@@ -107,3 +107,5 @@ todolist-api-backend/src/main/java/com/CHRESTAPI/todolist/targets/dtos/
 **/target/
 **/dist/
 **/build/
+
+**/.angular/
