@@ -47,7 +47,7 @@ export class TargetService {
       );
   }
 
-  // Update targetÒ
+  // Update target
   updateTarget(id: number, target: UpdateTargetDto): Observable<TargetCompany> {
     const updatedTarget = {
       ...target,
