@@ -1,6 +1,9 @@
 package com.CHRESTAPI.todolist.targets;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 @NoArgsConstructor
@@ -9,9 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "target_companies")
 public class TargetCompany {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
